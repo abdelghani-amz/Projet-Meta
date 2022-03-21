@@ -40,7 +40,11 @@ public class Solver {
 	//returns the combination of moves that leads to the goal.
 	public String aStarRecursive(Node root, Comparator<Node> comp) {
 		
-		if (root.isSolution()) return root.getPath() ;
+		if (root.isSolution()) {
+			fermes = new HashSet<Integer>() ;
+			ouverts = new HashSet<Node>() ;
+			return root.getPath() ;
+		}
 		
 		for(Node n : root.getChildNodes()) {
 			if(!visited(n)) {
@@ -48,29 +52,43 @@ public class Solver {
 			}
 		}
 		fermes.add(root.getState());
-		/*
-		if(comp instanceof SortByManhattan) {
-			for(Node n : ouverts) {
-				System.out.print(n.getState() + "=" + n.heurManhattan() + "/" + n.nodeDepth() + " || ");
-			}
-		}
-		else {
-			for(Node n : ouverts) {
-				System.out.print(n.getState() + "=" + n.heurMisplaced() + "/" + n.nodeDepth() + " || ");
-			}
-		}
-		*/
+		
 		Node n ;
 		do {
 			n =Collections.min(ouverts, comp) ;
 			ouverts.remove(n) ;
 		}while(visited(n));
 		
-		
 		return(aStarRecursive(n, comp)) ;
 	}
 	
+	//Iterative implementation of the A* algorithm using the hamming distance heuristic function and the manhattan distance heuristic function.
+	//returns the combination of moves that leads to the goal.
+	public String aStarIterative(Node root, Comparator<Node> comp) {
+		
+		if (root.isSolution()) return root.getPath() ;
+		
+		do {
+			for(Node n : root.getChildNodes()) {
+				if(!visited(n)) {
+					ouverts.add(n);
+				}
+			}
+			fermes.add(root.getState());
+			
+			do {
+				root =Collections.min(ouverts, comp) ;
+				ouverts.remove(root) ;
+			}while(visited(root));
+			
+		}while(!root.isSolution() && !ouverts.isEmpty()) ;
+		
+		fermes = new HashSet<Integer>() ;
+		ouverts = new HashSet<Node>() ;
+		
+		if(root.isSolution()) return root.getPath() ;
+		else return "" ;
 	
-	
+	}
 
 }

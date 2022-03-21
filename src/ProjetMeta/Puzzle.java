@@ -115,6 +115,29 @@ public class Puzzle {
 	public boolean isSolution() {
 		return state == GOAL ;
 	}
+	
+	public void performMoves(String path){
+		Puzzle trace = new Puzzle(state) ;
+	    for(int i = 0 ; i<path.length() ; i++){
+	        switch (path.charAt(i)){
+	        case 'U':
+	            trace = trace.moveUp();
+	            break;
+	        case 'D':
+	        	trace = trace.moveDown();
+	            break;
+	        case 'L':
+	            trace = trace.moveLeft() ;
+	            break;
+	        case 'R':
+	            trace = trace.moveRight() ;
+	            break;
+	        }
+	        System.out.println(trace);
+	        System.out.println("--------------------\n");
+	    }
+    }
+	
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
@@ -160,7 +183,10 @@ public class Puzzle {
 		Puzzle p = new Puzzle(437568219) ;
 		Node n = new Node(p ,"") ;
 		
+		p.performMoves(s.aStarIterative(n, new Solver.SortByManhattan()));
 		System.out.println(s.aStarRecursive(n, new Solver.SortByManhattan()));
+		System.out.println(s.aStarIterative(n, new Solver.SortByMisplaced()));
+		
 
 	}
 
