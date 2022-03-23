@@ -25,6 +25,9 @@ public class Node extends Puzzle{
 		return path;
 	}
 	
+	
+	
+
 	//returns all possible child nodes. 
 	public LinkedList<Node> getChildNodes() {
 		LinkedList<Node> childnodes = new LinkedList<Node>() ;
@@ -35,6 +38,8 @@ public class Node extends Puzzle{
 		}
 		return childnodes ;
 	}
+	//returns the child node of the given orientation.
+	
 	
 	public int nodeDepth() {
 		return getPath().length() ;

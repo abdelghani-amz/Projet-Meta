@@ -1,15 +1,19 @@
 package ProjetMeta;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Stack;
 
 
 public class Solver {
 	
 	HashSet<Integer> fermes ; //set containing the states that have already been visited.
 	HashSet<Node> ouverts; //set containing the states that have yet to be visited.
-	
+	 private HashSet<Node> explored = new HashSet<Node>(); //
+	 Stack<Node> stack= new Stack<Node>();
 	public Solver() {
 		fermes = new HashSet<Integer> () ;
 		ouverts = new HashSet<Node> () ;
@@ -90,5 +94,60 @@ public class Solver {
 		else return "" ;
 	
 	}
+	
+	 
+	     
+	
 
-}
+	public String DFS(Node root,int seuil) {
+		
+		stack.push(root);
+		explored.add(root);
+		int i=0,num=0;
+		
+		while(!stack.isEmpty()) {
+			
+		while (i<seuil)
+		{
+		root = stack.pop();	
+		//System.out.println(root.getState());
+		// System.out.println(root.getPath());
+		if(root.isSolution()) {System.out.println("sucess "+root.getPath()); return root.getPath();}
+		num=getChilderen(root);
+		
+		i++;
+		
+		}
+		
+	if(i>=seuil) {//removing the children nodes 
+		for(int j=0;j<num;j++)	stack.pop();
+		
+		i--;}
+		
+	
+		}
+		if(stack.isEmpty()){
+	
+		      System.out.println("stack empty");
+		    }
+		if(root.isSolution()) {System.out.println("sucess"); return root.getPath();}
+		
+return "";	}
+	
+	 public int getChilderen(Node state) {
+		int num=0;
+	    	for(Node n: state.getChildNodes()) {
+	    		
+	    		 if(!explored.contains(n)){
+	    		        explored.add(n);
+	    		     
+	    		        stack.push(n);
+	    		       num++;
+	   		 }
+	    		    		
+	    	
+	     } 
+	 return num;   	}
+		}
+		
+		

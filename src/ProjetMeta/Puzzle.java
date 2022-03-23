@@ -180,12 +180,15 @@ public class Puzzle {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Solver s = new Solver() ;
-		Puzzle p = new Puzzle(437568219) ;
+		Puzzle p = new Puzzle(123456978) ;
 		Node n = new Node(p ,"") ;
 		
-		p.performMoves(s.aStarIterative(n, new Solver.SortByManhattan()));
-		System.out.println(s.aStarRecursive(n, new Solver.SortByManhattan()));
-		System.out.println(s.aStarIterative(n, new Solver.SortByMisplaced()));
+		//p.performMoves(s.aStarIterative(n, new Solver.SortByManhattan()));
+		//	System.out.println( s.DFS(n, 22));
+			p.performMoves(s.DFS(n, 22));
+	//System.out.println(s.DFS(n, 25));	
+	//System.out.println(s.aStarRecursive(n, new Solver.SortByManhattan()));
+		//System.out.println(s.aStarIterative(n, new Solver.SortByMisplaced()));
 		
 
 	}
