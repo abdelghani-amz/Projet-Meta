@@ -49,6 +49,28 @@ public class Node extends Puzzle{
 	public int heurMisplaced() {
 		return misplaced() + nodeDepth() ;
 	}
+	
+	//heuristic function 3.
+	public int heurManhattan_RevPenalty() {
+		return getReversalCount() + manhattan() + nodeDepth() ;
+	}
+	
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+            return true;
+        }
+		
+		if (!(o instanceof Node) || o == null) {
+            return false;
+        }
+		
+		Node n = (Node) o ;
+		return (this.getState() == n.getState() && nodeDepth() == n.nodeDepth() ) ;
+	}
+	
+	
 
 	
 }

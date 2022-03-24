@@ -1,5 +1,6 @@
 package ProjetMeta;
 
+
 public class Puzzle {
 	
 	// Number 9 represents the empty tile.
@@ -17,7 +18,6 @@ public class Puzzle {
 		return state;
 	}
 	
-
 	public void setState(int state) {
 		this.state = state;
 	}
@@ -86,6 +86,36 @@ public class Puzzle {
 		return (tilepos % 3 != 0) ? tilepos % 3 : 3 ;
 	}
 	
+	//returns True if two tiles are adjacent to each other. False otherwise.
+	//Helper function for getReversalCount().
+	private boolean areAdjacent(int tilepos1, int tilepos2) {
+		return ( Math.abs(tilepos1 - tilepos2) == 3 || Math.abs(tilepos1 - tilepos2) == 1 )  ;
+	}
+	
+	//returns the number of direct reversals.
+	//two tiles form a direct reversal if :
+	//	1. they are adjacent to each other.
+	//	2. tile a is in the goal position of tile b, and tile b is in the goal position of tile a.
+	//		1	2	3
+	//		5	4	6		in this example 5 and 4 form a direct reversal.
+	//		7	8
+	public int getReversalCount() {
+		String statestr = Integer.toString(state);
+		String goalstr = Integer.toString(GOAL);
+		char charingoal ,charingoal2, charinstate ;
+		int posinstate ,reversals = 0 ;
+		
+		for(int i = 0 ; i < 9 ; i++) {
+			charingoal = goalstr.charAt(i);
+			charinstate = statestr.charAt(i);
+			if (charingoal == '9' || charinstate == '9' || charinstate == charingoal) continue ;
+			posinstate = statestr.indexOf(charingoal);
+			charingoal2 = goalstr.charAt(posinstate); 
+			if ((charinstate == charingoal2) && (charingoal == statestr.charAt(posinstate)) && (areAdjacent(i, posinstate))) reversals++ ;
+		}
+		return reversals ;
+	}
+	
 	//returns the sum of Manhattan distances between a tile and its approriate position.
 	public int manhattan() {
 		int manhattan = 0;
@@ -93,7 +123,7 @@ public class Puzzle {
 		String goalstr = Integer.toString(GOAL) ;
 		for(int i = 0 ; i < 9 ; i++) {
 			if(statestr[i] == '9') continue ;
-			int rowdiff = Math.abs(row(statestr[i] - 48) - row(1 + goalstr.indexOf(i + 49)));
+			int rowdiff = Math.abs(row(statestr[i] - 48) - row(1 + goalstr.indexOf(i + 49))); //48 and 49 represent the ascii code of '0' and '1' respectively.
             int coldiff = Math.abs(col(statestr[i] - 48) - col(1 + goalstr.indexOf(i + 49)));
             manhattan = manhattan + rowdiff + coldiff;
 		}
@@ -110,6 +140,35 @@ public class Puzzle {
 			if (goalstr[i] != statestr[i]) misplaced ++ ;
 		}
 		return misplaced ; 
+	}
+	
+	//returns the inversion count of a state.
+	//Two tiles form an inversion when the one with the higher value appears before the one with the lower value.
+	public int getInversionCount() {
+		char[] statestr = Integer.toString(state).toCharArray();
+		int invcount = 0 ; 
+		for(int i = 0 ; i < 8 ; i++) {
+			if(statestr[i] == '9') continue ;
+			for(int j = i + 1 ; j < 9 ; j++ ) {
+				if(statestr[j]== '9') continue ;
+				if(statestr[i] > statestr[j]) invcount++ ;
+			}
+		}
+		return  invcount;
+		
+	}
+	
+	//returns the parity of a state.
+	//The parity of a state is the parity of its inversion count.
+	public int getParity() {
+		return getInversionCount() % 2 ;
+ 	}
+	
+	//returns true if the state has a solution, false otherwise.
+	//A state has a solution if it has the same parity as the parity of its goal state.
+	public boolean isSolvable() {
+		Puzzle goal = new Puzzle(GOAL) ;
+		return getParity() == goal.getParity() ;
 	}
 	
 	public boolean isSolution() {
@@ -180,13 +239,16 @@ public class Puzzle {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Solver s = new Solver() ;
-		Puzzle p = new Puzzle(437568219) ;
+		Solver s2 = new Solver() ;
+		Solver s3 = new Solver() ;
+		Puzzle p = new Puzzle(867254391) ; //this is the hardest instance possible. cant be solved in under 31 moves.
 		Node n = new Node(p ,"") ;
 		
-		p.performMoves(s.aStarIterative(n, new Solver.SortByManhattan()));
-		System.out.println(s.aStarRecursive(n, new Solver.SortByManhattan()));
-		System.out.println(s.aStarIterative(n, new Solver.SortByMisplaced()));
+		System.out.println("Manhattan with  Reversal Penalty: \t" + s.aStarIterative(n, new Solver.SortByManhattan_RevPenalty()));
+		System.out.println("Manhattan: \t" + s2.aStarIterative(n, new Solver.SortByManhattan()));
 		
+		System.out.println("DFS: \t" + s3.dFS(n, 31));
+
 
 	}
 
