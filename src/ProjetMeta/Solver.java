@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 
@@ -55,6 +58,17 @@ public class Solver {
 		return (depth == null) ? false : depth <= n.nodeDepth() ;  
 	}
 	
+	public int exploredCount() {
+		return fermes.size() + fermes_dfs.size() ;
+	}
+	
+	public int generatedCount() {
+		for(Iterator<Node> i = ouverts.iterator(); i.hasNext();) {
+			if (visited(i.next())) i.remove();
+		}
+		return ouverts.size() + fermes.size() + fermes_dfs.size() ;
+	}
+	
 	//Recursive implementation of the A* algorithm using the hamming distance heuristic function and the manhattan distance heuristic function.
 	//returns the combination of moves that leads to the goal.
 	public String aStarRecursive(Node root, Comparator<Node> comp) {
@@ -103,8 +117,6 @@ public class Solver {
 			
 		}while(!root.isSolution() && !ouverts.isEmpty()) ;
 		
-		System.out.println(fermes.size());
-		System.out.println(ouverts.size());
 		
 		if(root.isSolution()) return root.getPath() ;
 		else return "" ;
@@ -125,7 +137,6 @@ public class Solver {
 			parent = stack.pop();
 			ouverts.remove(parent);
 			if (parent.isSolution()) {
-				System.out.println(fermes_dfs.size());
 				return parent.getPath() ;
 			}
 			
@@ -140,7 +151,35 @@ public class Solver {
 			}
 		}
 		
-		return ("Impossible a resoudre avec un seuil de "+ seuil) ;
+		return ("X") ;
+	}
+	
+	public String bFS(Node root) {
+		
+		if(!root.isSolvable()) return "" ;
+		if(root.isSolution()) return root.getPath() ;
+		
+		Queue<Node> q = new LinkedList<Node>();
+		do {
+			fermes.add(root.getState());
+			for(Node n : root.getChildNodes()) {
+				if(!visited(n)) {
+					ouverts.add(n);
+					q.add(n);
+				}
+			}
+
+			do {
+				root = q.poll() ;
+				ouverts.remove(root) ;
+			}while(visited(root));
+			
+		}while(!root.isSolution() && !q.isEmpty()) ;
+		
+		
+		if(root.isSolution()) return root.getPath() ;
+		else return "" ;
+	
 	}
 
 }

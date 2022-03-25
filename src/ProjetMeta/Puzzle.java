@@ -241,13 +241,16 @@ public class Puzzle {
 		Solver s = new Solver() ;
 		Solver s2 = new Solver() ;
 		Solver s3 = new Solver() ;
-		Puzzle p = new Puzzle(867254391) ; //this is the hardest instance possible. cant be solved in under 31 moves.
+		Solver s4 = new Solver() ;
+		Solver s5 = new Solver() ;
+		Puzzle p = new Puzzle(518246739) ; //867254391 is the hardest instance possible. cant be solved in under 31 moves.
 		Node n = new Node(p ,"") ;
 		
-		System.out.println("Manhattan with  Reversal Penalty: \t" + s.aStarIterative(n, new Solver.SortByManhattan_RevPenalty()));
-		System.out.println("Manhattan: \t" + s2.aStarIterative(n, new Solver.SortByManhattan()));
-		
-		System.out.println("DFS: \t" + s3.dFS(n, 31));
+		System.out.println("Misplaced: \t" + s5.aStarIterative(n, new Solver.SortByMisplaced()) + "\t Generated: " + s5.generatedCount() + "\t Explored: " + s5.exploredCount());
+		System.out.println("Manhattan with Reversal Penalty: \t" + s.aStarIterative(n, new Solver.SortByManhattan_RevPenalty()) + "\t Generated: " + s.generatedCount() + "\t Explored: " + s.exploredCount());
+		System.out.println("Manhattan: \t" + s2.aStarIterative(n, new Solver.SortByManhattan()) + "\t Generated: " + s2.generatedCount() + "\t Explored: " + s2.exploredCount());
+		System.out.println("DFS: \t" + s3.dFS(n, 31) + "\t Generated: " + s3.generatedCount() + "\t Explored: " + s3.exploredCount());
+		System.out.println("BFS: \t" + s4.bFS(n) + "\t Generated: " + s4.generatedCount() + "\t Explored: " + s4.exploredCount());
 
 
 	}
