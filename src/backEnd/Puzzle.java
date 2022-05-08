@@ -1,4 +1,5 @@
 package backEnd;
+import java.util.LinkedList;
 
 
 public class Puzzle {
@@ -129,6 +130,19 @@ public class Puzzle {
 		}
 		return manhattan ;
 	}
+
+	//returns tuple with the vertical distance and horizontal distance separated. (USED IN PART 2)
+	public int[] manhattanXY(int goal) {
+		char[] statestr = Integer.toString(state).toCharArray(); 
+		int rowdiff=0, coldiff =0;
+		String goalstr = Integer.toString(goal) ;
+		for(int i = 0 ; i < 9 ; i++) {
+			if(statestr[i] == '9') continue ;
+			rowdiff = rowdiff + (row(1 + goalstr.indexOf(i + 49)) - row(statestr[i] - 48)); //48 and 49 represent the ascii code of '0' and '1' respectively.
+			coldiff = coldiff + (col(1 + goalstr.indexOf(i + 49)) - col(statestr[i] - 48));
+		}
+		return new int[]{coldiff, rowdiff} ;
+	}
 	
 	//returns the number of misplaced tiles (also known as haming distance).
 	public int misplaced() {
@@ -155,7 +169,6 @@ public class Puzzle {
 			}
 		}
 		return  invcount;
-		
 	}
 	
 	//returns the parity of a state.
@@ -174,6 +187,7 @@ public class Puzzle {
 	public boolean isSolution() {
 		return state == GOAL ;
 	}
+	
 	
 	public String[] performMoves(String path){
 		Puzzle trace = new Puzzle(state) ;
@@ -200,6 +214,46 @@ public class Puzzle {
 	    
 	    return moves ;
     }
+	
+	public Puzzle goToState(String path) {
+		Puzzle trace = new Puzzle(state) ;
+		for(int i = 0 ; i<path.length() && trace!=null; i++){
+	        switch (path.charAt(i)){
+	        case 'U':
+	            trace = trace.moveUp();
+	            break;
+	        case 'D':
+	        	trace = trace.moveDown();
+	            break;
+	        case 'L':
+	            trace = trace.moveLeft() ;
+	            break;
+	        case 'R':
+	            trace = trace.moveRight() ;
+	            break;
+	        }
+		}		
+		return trace ;
+	}
+	
+	public LinkedList<Character> getPossibleMoves(){
+		LinkedList<Character> list = new LinkedList<Character>();
+		int posx = Integer.toString(state).indexOf('9');
+		if(posx >= 3 ){
+			list.add('U');
+		}
+		if(posx < 6 ) {
+			list.add('D');
+		}
+		if(posx % 3 != 0 ) {
+			list.add('L');
+		}
+		if(posx % 3 != 2 ) {
+			list.add('R');
+		}
+		
+		return list ;
+	}
 	
 	@Override
 	public boolean equals(Object o) {
@@ -239,24 +293,6 @@ public class Puzzle {
 		}
 		return tostring.toString();
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Solver s = new Solver() ;
-		Solver s2 = new Solver() ;
-		Solver s3 = new Solver() ;
-		Solver s4 = new Solver() ;
-		Solver s5 = new Solver() ;
-		Puzzle p = new Puzzle(518246739) ; //867254391 is the hardest instance possible. cant be solved in under 31 moves.
-		Node n = new Node(p ,"") ;
-		
-		System.out.println("Misplaced: \t" + s5.aStarIterative(n, new Solver.SortByMisplaced()) + "\t Generated: " + s5.generatedCount() + "\t Explored: " + s5.exploredCount());
-		System.out.println("Manhattan with Reversal Penalty: \t" + s.aStarIterative(n, new Solver.SortByManhattan_RevPenalty()) + "\t Generated: " + s.generatedCount() + "\t Explored: " + s.exploredCount());
-		System.out.println("Manhattan: \t" + s2.aStarIterative(n, new Solver.SortByManhattan()) + "\t Generated: " + s2.generatedCount() + "\t Explored: " + s2.exploredCount());
-		System.out.println("DFS: \t" + s3.dFS(n, 31) + "\t Generated: " + s3.generatedCount() + "\t Explored: " + s3.exploredCount());
-		System.out.println("BFS: \t" + s4.bFS(n) + "\t Generated: " + s4.generatedCount() + "\t Explored: " + s4.exploredCount());
-
-
-	}
+	
 
 }
