@@ -40,27 +40,25 @@ public class SolverPSO {
 			Particle.GBEST = swarm.first().getPosition() ;
 			Particle.GBEST_FITNESS = swarm.first().calcFitness() ;
 			if(Particle.GBEST_FITNESS == 0) {
-				//System.out.println("SOLUTION FOUND ON ITERATION " + nb_iteration + " " + swarm.first() + " " + swarm.first().getPath());
+				System.out.println("SOLUTION FOUND ON swarm size "  + swarm_size/*+ nb_iteration + " " + swarm.first() + " " + swarm.first().getPath()*/);
 				return swarm.first().getPath();
 			}
 			//System.out.println(swarm.first());
 			new_swarm = new TreeSet<Particle>() ;
-			do {
-				for(Particle p : swarm) {
-					new_swarm.add(p.update(w, c1, c2)) ;
-				}
-			}while(new_swarm.size() <= MAX_SWARM_SIZE) ;
+			for(Particle p : swarm) {
+				new_swarm.add(p.update(w, c1, c2)) ;
+			}
 			swarm = new_swarm ;
 			swarm_size = swarm.size() ;
 		}
 		return "X" ;
 	}
 	
-	/*
+	
 	public static void main(String[] args) {
 		SolverPSO s = new SolverPSO() ;
 		Particle.INITIAL_STATE = new Puzzle(349761852) ;
-		s.MAX_SWARM_SIZE = 500 ;
+		s.MAX_SWARM_SIZE = 100 ;
 		s.w = 0.7f ;
 		s.c1 = 0.3f;
 		s.c2 =  0.6f ;
@@ -72,5 +70,5 @@ public class SolverPSO {
 		
 		System.out.println(Particle.INITIAL_STATE.goToState(po) );
 	}
-	*/
+	
 }
