@@ -8,10 +8,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SolverPSO {
 	
 	public  SortedSet<Particle> swarm = new TreeSet<Particle>() ;
-	public int swarm_size ;
+	public int MAX_SWARM_SIZE ;
 	public float c1, c2, w ;
-	public int MAX_ITER ;
 	public int nb_iteration;
+	public int swarm_size ;
 	
 	public Particle generateParticle() {
 		int idx = 0;
@@ -28,29 +28,30 @@ public class SolverPSO {
 	}
 	
 	public void initSwarm() {
-		while(swarm.size() < swarm_size ) {
+		while(swarm.size() < MAX_SWARM_SIZE ) {
 			swarm.add(generateParticle()) ;
 		}
 	}
 	
-	public String runPSO() {
+	public String runPSO( int MAX_ITER) {
 		SortedSet<Particle> new_swarm ;
 		
 		for(nb_iteration = 0 ; nb_iteration < MAX_ITER ; nb_iteration++) {
 			Particle.GBEST = swarm.first().getPosition() ;
 			Particle.GBEST_FITNESS = swarm.first().calcFitness() ;
 			if(Particle.GBEST_FITNESS == 0) {
-				//System.out.println("SOLUTION FOUND ON ITERATION " + nb_iteration + " " + swarm.first() );
+				//System.out.println("SOLUTION FOUND ON ITERATION " + nb_iteration + " " + swarm.first() + " " + swarm.first().getPath());
 				return swarm.first().getPath();
 			}
-			System.out.println(swarm.first());
+			//System.out.println(swarm.first());
 			new_swarm = new TreeSet<Particle>() ;
 			do {
 				for(Particle p : swarm) {
 					new_swarm.add(p.update(w, c1, c2)) ;
 				}
-			}while(new_swarm.size() <= swarm_size) ;
+			}while(new_swarm.size() <= MAX_SWARM_SIZE) ;
 			swarm = new_swarm ;
+			swarm_size = swarm.size() ;
 		}
 		return "X" ;
 	}
@@ -58,17 +59,18 @@ public class SolverPSO {
 	/*
 	public static void main(String[] args) {
 		SolverPSO s = new SolverPSO() ;
-		Particle.INITIAL_STATE = new Puzzle(584261379) ;
-		s.swarm_size = 500 ;
+		Particle.INITIAL_STATE = new Puzzle(349761852) ;
+		s.MAX_SWARM_SIZE = 500 ;
 		s.w = 0.7f ;
 		s.c1 = 0.3f;
 		s.c2 =  0.6f ;
-		s.MAX_ITER = 1000 ;
+		
+		
 		s.initSwarm() ;
 		System.out.println(s.swarm);
-		String po = s.runPSO();	
-		 
-		System.out.println(po);
+		String po = s.runPSO(15000);	
+		
+		System.out.println(Particle.INITIAL_STATE.goToState(po) );
 	}
 	*/
 }

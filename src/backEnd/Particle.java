@@ -34,7 +34,7 @@ public class Particle implements Comparable<Particle> {
 		position = p ;
 		fitness = calcFitness() ;
 		velocity = 0;
-		this.path = path ;
+		this.path = path;
 		PBEST = position.getState();
 		PBEST_FITNESS = fitness ;
 		
@@ -63,8 +63,9 @@ public class Particle implements Comparable<Particle> {
 		if(!path.equals("")) possible_moves.remove(OPPOSITES.get(path.charAt(path.length() - 1))) ;
 		if(possible_moves.size() > 0) {
 			velocity = (velocity*w  + c1*r1*local_dist + c2*r2*global_dist) % possible_moves.size()	;
-			position = position.goToState(possible_moves.get((int) velocity) + "") ;
+			//position = position.goToState(possible_moves.get((int) velocity) + "") ;
 			path = path + possible_moves.get((int) velocity) ;
+			position  = INITIAL_STATE.goToState(path) ;
 			fitness = calcFitness() ;
 			if(fitness < PBEST_FITNESS) {
 				PBEST = position.getState() ;
@@ -73,10 +74,10 @@ public class Particle implements Comparable<Particle> {
 		}
 		
 		Particle p = new Particle() ;
-		p.path = getPath() ;
-		p.position = position; 
-		p.PBEST = getPBEST() ;
-		p.PBEST_FITNESS = getPBEST_FITNESS() ;
+		p.path = path ;
+		p.position = new Puzzle(position.getState()); 
+		p.PBEST = PBEST ;
+		p.PBEST_FITNESS = PBEST_FITNESS ;
 		p.velocity = velocity ;
 		p.fitness = fitness ;
 		if(path.length() >= 32) p.truncate();
@@ -89,7 +90,7 @@ public class Particle implements Comparable<Particle> {
 		if(!(o instanceof Particle)) return false ;
 		
 		Particle c = (Particle) o ; 
-		return getPath().equals(c.getPath()) ;
+		return path.equals(c.path) ;
 	}
 	
 	public int compareTo(Particle p) {
@@ -101,7 +102,7 @@ public class Particle implements Comparable<Particle> {
 	
 	public void truncate() {
 		for(int i = 0 ; i < 12 ; i++ ) {
-			path = getPath().replaceAll(CYCLES[i], "") ; 
+			path = path.replaceAll(CYCLES[i], "") ; 
 		}
 	}
 	

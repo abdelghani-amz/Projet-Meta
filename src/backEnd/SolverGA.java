@@ -13,6 +13,7 @@ public class SolverGA {
 	public float pop_fitness ;
 	public int pop_size ;
 	public static int  MIN_LENGTH=6;
+	public  int iterations ;
 	
 	
 	//Selection function. (Roulette selection)
@@ -82,6 +83,7 @@ public class SolverGA {
 			
 			if(population.first().getFitness() == 3) {
 				//System.out.println( population.first().getFitness() + " " +  population.first() + " " + i);
+				iterations = i ;
 				return population.first().getGenes();
 			}
 			
@@ -96,7 +98,7 @@ public class SolverGA {
 				if(j>=population.size() * 0.2) break ;
 			}
 
-			while(j < MAX_POP_SIZE ) { 
+			while(j < MAX_POP_SIZE -2  ) { 
 				parents = selectPair();
 				children = crossOver(parents[0], parents[1]) ;
 				children[0].grow(mut_rate);
@@ -124,17 +126,19 @@ public class SolverGA {
 		}
 		return sum ;
 	}
+	
 	/*
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Chromosome.INITIAL_STATE = new Puzzle(915327468) ;
+		Chromosome.INITIAL_STATE = new Puzzle(524631798) ;
 		SolverGA s = new SolverGA() ;
 		s.MAX_POP_SIZE = 200 ;
 		s.cross_rate = 0.6 ;
 		s.mut_rate = 0.8 ;
 		s.initPopulation() ;
 		String p =s.runEvolution(15000);
-		System.out.println(p);
+		System.out.println(Chromosome.INITIAL_STATE.goToState(p));
 	} 
 	*/
+	
 }
