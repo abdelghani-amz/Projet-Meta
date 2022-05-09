@@ -168,7 +168,7 @@ public class Solver {
 					q.add(n);
 				}
 			}
-
+			
 			do {
 				root = q.poll() ;
 				ouverts.remove(root) ;

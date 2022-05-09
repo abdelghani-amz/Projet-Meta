@@ -130,17 +130,34 @@ public class Puzzle {
 		}
 		return manhattan ;
 	}
+	
+	public int manhattan(int goal) {
+		int manhattan = 0;
+		char[] statestr = Integer.toString(state).toCharArray(); 
+		String goalstr = Integer.toString(goal) ;
+		for(int i = 0 ; i < 9 ; i++) {
+			if(statestr[i] == '9') continue ;
+			int rowdiff = Math.abs(row(statestr[i] - 48) - row(1 + goalstr.indexOf(i + 49))); //48 and 49 represent the ascii code of '0' and '1' respectively.
+            int coldiff = Math.abs(col(statestr[i] - 48) - col(1 + goalstr.indexOf(i + 49)));
+            manhattan = manhattan + rowdiff + coldiff;
+		}
+		return manhattan ;
+	}
 
 	//returns tuple with the vertical distance and horizontal distance separated. (USED IN PART 2)
 	public int[] manhattanXY(int goal) {
 		char[] statestr = Integer.toString(state).toCharArray(); 
 		int rowdiff=0, coldiff =0;
 		String goalstr = Integer.toString(goal) ;
+		//System.out.println("gay");
 		for(int i = 0 ; i < 9 ; i++) {
 			if(statestr[i] == '9') continue ;
-			rowdiff = rowdiff + (row(1 + goalstr.indexOf(i + 49)) - row(statestr[i] - 48)); //48 and 49 represent the ascii code of '0' and '1' respectively.
-			coldiff = coldiff + (col(1 + goalstr.indexOf(i + 49)) - col(statestr[i] - 48));
+			//System.out.println(rowdiff + " " + coldiff);
+			rowdiff = rowdiff + Math.abs(row(1 + goalstr.indexOf(i + 49)) - row(statestr[i] - 48)); //48 and 49 represent the ascii code of '0' and '1' respectively.
+			coldiff = coldiff + Math.abs(col(1 + goalstr.indexOf(i + 49)) - col(statestr[i] - 48));
 		}
+		//System.out.println(rowdiff + " " + coldiff);
+		
 		return new int[]{coldiff, rowdiff} ;
 	}
 	

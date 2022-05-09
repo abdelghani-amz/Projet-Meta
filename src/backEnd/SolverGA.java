@@ -7,10 +7,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SolverGA {
 	
 	public  SortedSet<Chromosome> population = new TreeSet<Chromosome>() ;
-	public int pop_size ;
+	public int MAX_POP_SIZE ;
 	public double cross_rate, mut_rate ;
 	public static String[] Moves = {"U", "D", "L", "R"}  ;
 	public float pop_fitness ;
+	public int pop_size ;
 	public static int  MIN_LENGTH=6;
 	
 	
@@ -65,14 +66,14 @@ public class SolverGA {
 	
 	public void initPopulation() {
 		Chromosome c ;
-		while(population.size() < pop_size ) {
+		while(population.size() < MAX_POP_SIZE ) {
 			c = generateChromosome() ;
 			population.add(c) ;
 		}
 		pop_fitness = populationFitness() ;
 	}
 	
-	public void runEvolution(int nb_generations) {
+	public String runEvolution(int nb_generations) {
 		Chromosome[] parents , children;
 		SortedSet<Chromosome> next_gen ;
 		int j ;
@@ -80,12 +81,11 @@ public class SolverGA {
 			next_gen = new TreeSet<Chromosome>() ;
 			
 			if(population.first().getFitness() == 3) {
-				System.out.println( population.first().getFitness() + " " +  population.first() + " " + i);
-				return ;
+				//System.out.println( population.first().getFitness() + " " +  population.first() + " " + i);
+				return population.first().getGenes();
 			}
 			
 			j = 0 ;
-			
 			//keep 20% of current generation and pass them to the next generation as elites.
 			for(Chromosome c : population) {
 				Chromosome c2 = new Chromosome(c) ;
@@ -96,7 +96,7 @@ public class SolverGA {
 				if(j>=population.size() * 0.2) break ;
 			}
 
-			while(j < pop_size ) { 
+			while(j < MAX_POP_SIZE ) { 
 				parents = selectPair();
 				children = crossOver(parents[0], parents[1]) ;
 				children[0].grow(mut_rate);
@@ -110,8 +110,11 @@ public class SolverGA {
 			}
 			population = next_gen ;
 			pop_fitness = populationFitness() ;
-			System.out.println("GEN "+ i + "of size " + population.size() + " " + population.first()  + " " + population.first().getFitness());
+			pop_size = j ;
+			//System.out.println("GEN "+ i + "of size " + population.size() + " " + population.first()  + " " + population.first().getFitness());
 		}
+		
+		return "X" ;
 	}
 	
 	public float populationFitness() {
@@ -121,16 +124,17 @@ public class SolverGA {
 		}
 		return sum ;
 	}
-	
+	/*
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Chromosome.INITIAL_STATE = new Puzzle(915327468) ;
 		SolverGA s = new SolverGA() ;
-		s.pop_size = 200 ;
+		s.MAX_POP_SIZE = 200 ;
 		s.cross_rate = 0.6 ;
 		s.mut_rate = 0.8 ;
 		s.initPopulation() ;
-		s.runEvolution(15000);
+		String p =s.runEvolution(15000);
+		System.out.println(p);
 	} 
-		
+	*/
 }
