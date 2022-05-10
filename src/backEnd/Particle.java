@@ -63,7 +63,6 @@ public class Particle implements Comparable<Particle> {
 		if(!path.equals("")) possible_moves.remove(OPPOSITES.get(path.charAt(path.length() - 1))) ;
 		if(possible_moves.size() > 0) {
 			velocity = (velocity*w  + c1*r1*local_dist + c2*r2*global_dist) % possible_moves.size()	;
-			//position = position.goToState(possible_moves.get((int) velocity) + "") ;
 			path = path + possible_moves.get((int) velocity) ;
 			position  = INITIAL_STATE.goToState(path) ;
 			fitness = calcFitness() ;

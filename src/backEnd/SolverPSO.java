@@ -40,10 +40,9 @@ public class SolverPSO {
 			Particle.GBEST = swarm.first().getPosition() ;
 			Particle.GBEST_FITNESS = swarm.first().calcFitness() ;
 			if(Particle.GBEST_FITNESS == 0) {
-				System.out.println("SOLUTION FOUND ON swarm size "  + swarm_size/*+ nb_iteration + " " + swarm.first() + " " + swarm.first().getPath()*/);
+				//System.out.println("SOLUTION FOUND ON swarm size "  + swarm_size/*+ nb_iteration + " " + swarm.first() + " " + swarm.first().getPath()*/);
 				return swarm.first().getPath();
 			}
-			//System.out.println(swarm.first());
 			new_swarm = new TreeSet<Particle>() ;
 			for(Particle p : swarm) {
 				new_swarm.add(p.update(w, c1, c2)) ;

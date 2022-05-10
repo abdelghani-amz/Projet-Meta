@@ -74,8 +74,6 @@ public class Solver {
 	public String aStarRecursive(Node root, Comparator<Node> comp) {
 		
 		if (root.isSolution()) {
-			//fermes = new HashSet<Integer>() ;
-			//ouverts = new HashSet<Node>() ;
 			return root.getPath() ;
 		}
 		

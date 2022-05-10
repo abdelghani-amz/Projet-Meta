@@ -113,7 +113,6 @@ public class SolverGA {
 			population = next_gen ;
 			pop_fitness = populationFitness() ;
 			pop_size = j ;
-			//System.out.println("GEN "+ i + "of size " + population.size() + " " + population.first()  + " " + population.first().getFitness());
 		}
 		
 		return "X" ;

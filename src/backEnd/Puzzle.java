@@ -149,14 +149,11 @@ public class Puzzle {
 		char[] statestr = Integer.toString(state).toCharArray(); 
 		int rowdiff=0, coldiff =0;
 		String goalstr = Integer.toString(goal) ;
-		//System.out.println("gay");
 		for(int i = 0 ; i < 9 ; i++) {
 			if(statestr[i] == '9') continue ;
-			//System.out.println(rowdiff + " " + coldiff);
 			rowdiff = rowdiff + Math.abs(row(1 + goalstr.indexOf(i + 49)) - row(statestr[i] - 48)); //48 and 49 represent the ascii code of '0' and '1' respectively.
 			coldiff = coldiff + Math.abs(col(1 + goalstr.indexOf(i + 49)) - col(statestr[i] - 48));
 		}
-		//System.out.println(rowdiff + " " + coldiff);
 		
 		return new int[]{coldiff, rowdiff} ;
 	}
@@ -224,8 +221,6 @@ public class Puzzle {
 	            trace = trace.moveRight() ;
 	            break;
 	        }
-	        //System.out.println(trace);
-	        //System.out.println("--------------------\n");
 	        moves[i] = Integer.toString(trace.state);
 	    }
 	    

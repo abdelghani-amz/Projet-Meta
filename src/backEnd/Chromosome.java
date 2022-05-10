@@ -108,12 +108,6 @@ public class Chromosome implements Comparable<Chromosome>{
 		double proba ;
 		int gene_pos ;	
 		char[] genesch = encode().toCharArray() ;
-		/*
-		if(LENGTH/2 >= 2)
-			nbr_mut = ThreadLocalRandom.current().nextInt(0, LENGTH/2) ;
-		else
-			nbr_mut = 1;
-		*/
 		for (int i = 0 ; i < 2 ; i++) { 
 			proba = ThreadLocalRandom.current().nextDouble(0, 1);
 			gene_pos = ThreadLocalRandom.current().nextInt(0, LENGTH*2) ;	
