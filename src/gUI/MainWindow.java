@@ -67,6 +67,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JLabel lblParam1;
 	private JLabel lblParam2;
 	private JLabel lblParam3;
+	private JTextField txtSolSize;
 
 	/**
 	 * Launch the application.
@@ -134,15 +135,15 @@ public class MainWindow extends JFrame implements ActionListener {
 		contentPane.add(lblSoluce);
 		
 		JLabel lblTime = new JLabel("Temps d'execution: ");
-		lblTime.setBounds(307, 55, 133, 14);
+		lblTime.setBounds(307, 86, 133, 14);
 		contentPane.add(lblTime);
 		
 		lblMetric1 = new JLabel("Nombre d'\u00E9tats explor\u00E9s:");
-		lblMetric1.setBounds(307, 86, 170, 14);
+		lblMetric1.setBounds(307, 117, 170, 14);
 		contentPane.add(lblMetric1);
 		
 		lblMetric2 = new JLabel("Nombre d'\u00E9tats g\u00E9n\u00E9r\u00E9s:");
-		lblMetric2.setBounds(307, 117, 166, 14);
+		lblMetric2.setBounds(307, 148, 166, 14);
 		contentPane.add(lblMetric2);
 		
 		seuil = new JSpinner();
@@ -255,19 +256,19 @@ public class MainWindow extends JFrame implements ActionListener {
 		textTime = new JTextField();
 		textTime.setEditable(false);
 		textTime.setColumns(10);
-		textTime.setBounds(452, 52, 237, 20);
+		textTime.setBounds(452, 83, 237, 20);
 		contentPane.add(textTime);
 		
 		txtExplored = new JTextField();
 		txtExplored.setEditable(false);
 		txtExplored.setColumns(10);
-		txtExplored.setBounds(476, 83, 213, 20);
+		txtExplored.setBounds(476, 114, 213, 20);
 		contentPane.add(txtExplored);
 		
 		txtgen = new JTextField();
 		txtgen.setEditable(false);
 		txtgen.setColumns(10);
-		txtgen.setBounds(476, 114, 213, 20);
+		txtgen.setBounds(476, 145, 213, 20);
 		contentPane.add(txtgen);
 		
 		btnVisualisez = new JButton("Visualisez solution");
@@ -342,6 +343,16 @@ public class MainWindow extends JFrame implements ActionListener {
 		lblParam3.setVisible(false);
 		lblParam3.setBounds(10, 148, 166, 14);
 		contentPane.add(lblParam3);
+		
+		JLabel lblSolSize = new JLabel("Taille de la solution: ");
+		lblSolSize.setBounds(307, 55, 125, 14);
+		contentPane.add(lblSolSize);
+		
+		txtSolSize = new JTextField();
+		txtSolSize.setEditable(false);
+		txtSolSize.setColumns(10);
+		txtSolSize.setBounds(442, 52, 247, 20);
+		contentPane.add(txtSolSize);
 				
 	}
 	
@@ -611,6 +622,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		}
 		
 		txtSolution.setText(solution);
+		txtSolSize.setText("" + solution.length());
 		textTime.setText(endtime-starttime + "ms");
 		btnVisualisez.setEnabled(true);
 	}
